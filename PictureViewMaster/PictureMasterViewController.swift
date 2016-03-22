@@ -72,14 +72,4 @@ class PictureMasterViewController: UIViewController {
                 
         })
     }
-    
-    
-    private func resetImageViewAngle (){
-        UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
-            self.imageView.frame = self.imageViewFrame
-            self.imageView.transform = CGAffineTransformRotate(self.imageView.transform, -(atan2(self.imageView.transform.b, self.imageView.transform.a)))
-            }, completion: { finished in
-                
-        })
-    }
 }
