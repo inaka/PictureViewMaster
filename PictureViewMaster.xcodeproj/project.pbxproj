@@ -14,6 +14,7 @@
 		56FF71EE1CA0333600DA1D83 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56FF71EC1CA0333600DA1D83 /* LaunchScreen.storyboard */; };
 		56FF71F91CA0333600DA1D83 /* PictureViewMasterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56FF71F81CA0333600DA1D83 /* PictureViewMasterTests.swift */; };
 		56FF72041CA0333600DA1D83 /* PictureViewMasterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56FF72031CA0333600DA1D83 /* PictureViewMasterUITests.swift */; };
+		56FF72141CA0341E00DA1D83 /* PictureMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56FF72131CA0341E00DA1D83 /* PictureMasterViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		56FF71FF1CA0333600DA1D83 /* PictureViewMasterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PictureViewMasterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		56FF72031CA0333600DA1D83 /* PictureViewMasterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureViewMasterUITests.swift; sourceTree = "<group>"; };
 		56FF72051CA0333600DA1D83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56FF72131CA0341E00DA1D83 /* PictureMasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PictureMasterViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			children = (
 				56FF71E31CA0333600DA1D83 /* AppDelegate.swift */,
 				56FF71E51CA0333600DA1D83 /* ViewController.swift */,
+				56FF72131CA0341E00DA1D83 /* PictureMasterViewController.swift */,
 				56FF71E71CA0333600DA1D83 /* Main.storyboard */,
 				56FF71EA1CA0333600DA1D83 /* Assets.xcassets */,
 				56FF71EC1CA0333600DA1D83 /* LaunchScreen.storyboard */,
@@ -257,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				56FF71E61CA0333600DA1D83 /* ViewController.swift in Sources */,
+				56FF72141CA0341E00DA1D83 /* PictureMasterViewController.swift in Sources */,
 				56FF71E41CA0333600DA1D83 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
