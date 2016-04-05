@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PictureViewMaster/PictureMasterViewController.swift"
-            timestampString = "480361710.814813"
+            timestampString = "481569593.515428"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "pinchGesture(_:)"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "moveInView(_:fromDirection:withCompletion:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PictureViewMaster/PictureMasterViewController.swift"
-            timestampString = "480361710.814813"
+            timestampString = "481569593.515428"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
-            landmarkName = "addGestureRecognizers()"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "moveInView(_:fromDirection:withCompletion:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PictureViewMaster/PictureMasterViewController.swift"
+            timestampString = "481569593.515428"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
+            landmarkName = "gestureRecognizer(_:shouldRecognizeSimultaneouslyWithGestureRecognizer:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

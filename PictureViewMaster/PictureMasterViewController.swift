@@ -8,18 +8,27 @@
 
 import UIKit
 
-class PictureMasterViewController: UIViewController {
-
+class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegate {
+    enum IncomeDirection {
+        case In
+        case Up
+        case Down
+        case Right
+        case Left
+    }
+    
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var imageView: UIImageView!
     var imageViewFrame : CGRect!
+    var offDirection : IncomeDirection = .In
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addGestureRecognizers()
     }
     
-    private func originalImageViewFitFrameForImage(image: UIImage) -> CGRect {
+    private func originalImageViewFitFrameForImage(imageView: UIImageView) -> CGRect {
+        let image = imageView.image!
         let screenSize = UIScreen.mainScreen().bounds
         var frame = CGRect()
         
@@ -41,38 +50,60 @@ class PictureMasterViewController: UIViewController {
         
         return frame
     }
-    
+
     private func addGestureRecognizers() {
         self.imageView.userInteractionEnabled = true
         self.imageView.multipleTouchEnabled = true
+
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGesture(_:)))
+        tapRecognizer.numberOfTapsRequired = 2
+        self.imageView.addGestureRecognizer(tapRecognizer)
         
-        let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: Selector("pinchGesture:"))
+        let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinchGesture(_:)))
         self.imageView.addGestureRecognizer(pinchRecognizer)
+        pinchRecognizer.delegate = self
         
-        let dragRecognizer = UIPanGestureRecognizer(target: self, action: Selector("dragGesture:"))
+        let dragRecognizer = UIPanGestureRecognizer(target: self, action: #selector(dragGesture(_:)))
         self.imageView.addGestureRecognizer(dragRecognizer)
+        dragRecognizer.delegate = self
         
-        let rotateRecognizer = UIRotationGestureRecognizer(target: self, action: Selector("rotateGesture:"))
+        let rotateRecognizer = UIRotationGestureRecognizer(target: self, action: #selector(rotateGesture(_:)))
         self.imageView.addGestureRecognizer(rotateRecognizer)
+        rotateRecognizer.delegate = self
         
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: Selector("tapBackgroundGesture:"))
-        self.backgroundView.addGestureRecognizer(tapRecognizer)
+        let tapBackgroundRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapBackgroundGesture(_:)))
+        self.backgroundView.addGestureRecognizer(tapBackgroundRecognizer)
+    }
+    
+    func tapGesture(gesture: UITapGestureRecognizer) {
+        guard let view = gesture.view else { return }
+        self.resetViewFrameAndRotation(view)
     }
     
     func pinchGesture(gesture: UIPinchGestureRecognizer) {
         guard let view = gesture.view else { return }
+        if self.hasToEnlargeView(gesture.view!) && gesture.state == .Ended {
+            self.enlargeViewToMinimumSize(view)
+            return
+        }
         
         view.transform = CGAffineTransformScale(view.transform, gesture.scale, gesture.scale)
         gesture.scale = 1
     }
     
     func dragGesture(gesture: UIPanGestureRecognizer) {
-        if gesture.state == .Ended {
-            self.centerImage(self.imageView)
+        guard let view = gesture.view else { return }
+        if self.hasToEnlargeView(gesture.view!) && gesture.state == .Ended {
+            self.enlargeViewToMinimumSize(view)
             return
         }
         
-        guard let view = gesture.view else { return }
+        if gesture.state == .Ended {
+            gesture.view!.userInteractionEnabled = false
+            self.moveInView(gesture.view!, fromDirection: self.isViewOutOfBounds(gesture.view!),
+                            withCompletion:nil)
+            return
+        }
     
         let translation = gesture.translationInView(self.view)
         view.center = CGPoint(x:view.center.x + translation.x,
@@ -82,31 +113,106 @@ class PictureMasterViewController: UIViewController {
     
     func rotateGesture(gesture: UIRotationGestureRecognizer) {
         guard let view = gesture.view else { return }
+        if self.hasToEnlargeView(gesture.view!) && gesture.state == .Ended {
+            self.enlargeViewToMinimumSize(view)
+            return
+        }
         
         view.transform = CGAffineTransformRotate(view.transform, gesture.rotation)
         gesture.rotation = 0
     }
     
     func tapBackgroundGesture(gesture: UITapGestureRecognizer) {
-        self.resetImageFrameAndRotation(self.imageView)
+        self.resetViewFrameAndRotation(self.imageView)
     }
     
-    private func centerImage(imageView: UIImageView) {
-        UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
-            let screenSize = UIScreen.mainScreen().bounds
-            let centerX = (screenSize.size.width / 2) - (imageView.frame.width / 2)
-            let centerY = (screenSize.size.height / 2) - (imageView.frame.height / 2)
-            
-            let frame = CGRect(x: centerX, y: centerY, width: imageView.frame.width, height: imageView.frame.height)
-            imageView.frame = frame
-            }, completion:nil)
+    private func isViewOutOfBounds(view: UIView) -> IncomeDirection{
+        let screenSize = UIScreen.mainScreen().bounds
+        
+        if (view.frame.origin.x + view.frame.width) < screenSize.width && (view.frame.width >= screenSize.width) && self.offDirection != .Right {
+            self.offDirection = .Right
+            return .Right
+        }else if (view.frame.origin.x > 0) && (view.frame.width >= screenSize.width) && self.offDirection != .Left {
+            self.offDirection = .Left
+            return .Left
+        }else if (view.frame.origin.y + view.frame.height) < screenSize.height && (view.frame.height >= screenSize.height) && self.offDirection != .Down {
+            self.offDirection = .Down
+            return .Down
+        }else if (view.frame.origin.y > 0) && (view.frame.height >= screenSize.height) && self.offDirection != .Up {
+            self.offDirection = .Up
+            return .Up
+        }else {
+            self.offDirection = .In
+            return .In
+        }
     }
     
-    private func resetImageFrameAndRotation(imageView: UIImageView) {
+    private func moveInView(view: UIView, fromDirection direction: IncomeDirection, withCompletion completion: ((Bool) -> Void)?) {
+        var viewX : CGFloat
+        var viewY : CGFloat
+        
+        let screenSize = UIScreen.mainScreen().bounds
+        
+        switch direction {
+        case .Down:
+            viewX = view.frame.origin.x
+            viewY = screenSize.size.height - view.frame.height
+        case .Up:
+            viewX = view.frame.origin.x
+            viewY = 0
+        case .Right:
+            viewX = screenSize.size.width - view.frame.width
+            viewY = view.frame.origin.y
+        case .Left:
+            viewX = 0
+            viewY = view.frame.origin.y
+        default:
+            view.userInteractionEnabled = true
+            return
+        }
+        
+        UIView.animateWithDuration(0.1, delay: 0.0, options: .CurveEaseOut, animations: {
+            let frame = CGRect(x: viewX, y: viewY, width: view.frame.width, height: view.frame.height)
+            view.frame = frame
+            }, completion: { finished in
+                self.moveInView(view, fromDirection: self.isViewOutOfBounds(view), withCompletion: completion)
+        })
+    }
+    
+    private func hasToEnlargeView(view: UIView) -> Bool{
+        let screenSize = UIScreen.mainScreen().bounds
+        let smallerThanScreenWidth = (view.frame.width < screenSize.width)
+        
+        let smallerThanScreenHeigth = (view.frame.height < screenSize.height)
+        
+        return smallerThanScreenWidth && smallerThanScreenHeigth
+    }
+    
+    private func enlargeViewToMinimumSize(view: UIView) {
+        self.resetViewFrame(view, completion: nil)
+    }
+    
+    private func resetViewFrame(view: UIView, completion: ((Bool) -> Void)?) {
         UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
-            let rotation = (atan2(imageView.transform.b, imageView.transform.a))
-            imageView.transform = CGAffineTransformRotate(imageView.transform, -rotation)
-            imageView.frame = self.originalImageViewFitFrameForImage(imageView.image!)
-            }, completion:nil)
+            view.frame = self.originalImageViewFitFrameForImage(view as! UIImageView)
+            }, completion:completion)
+    }
+    
+    private func resetViewRotation(view: UIView, completion: ((Bool) -> Void)?) {
+        UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
+            let rotation = (atan2(view.transform.b, view.transform.a))
+            view.transform = CGAffineTransformRotate(view.transform, -rotation)
+            }, completion:completion)
+    }
+    
+    private func resetViewFrameAndRotation(view: UIView) {
+        self.resetViewRotation(view, completion: nil)
+        self.resetViewFrame(view, completion: nil)
+    }
+    
+    //MARK: UIGestureRecognizerDelegate
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
