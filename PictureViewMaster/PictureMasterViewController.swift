@@ -9,18 +9,19 @@
 import UIKit
 
 class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegate {
-    enum IncomeDirection {
-        case In
-        case Up
-        case Down
-        case Right
-        case Left
+    struct OffsetDirection : OptionSetType {
+        let rawValue: Int
+        
+        static let Inside = OffsetDirection(rawValue: 0)
+        static let Up = OffsetDirection(rawValue: 1 << 0)
+        static let Down = OffsetDirection(rawValue: 1 << 1)
+        static let Right = OffsetDirection(rawValue: 1 << 2)
+        static let Left = OffsetDirection(rawValue: 1 << 3)
     }
     
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var imageView: UIImageView!
     var imageViewFrame : CGRect!
-    var offDirection : IncomeDirection = .In
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,8 +101,10 @@ class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegat
         
         if gesture.state == .Ended {
             gesture.view!.userInteractionEnabled = false
-            self.moveInView(gesture.view!, fromDirection: self.isViewOutOfBounds(gesture.view!),
-                            withCompletion:nil)
+            self.moveInView(gesture.view!, fromDirection: self.offsetDirectionForView(gesture.view!),
+                            withCompletion: { finish in
+                                gesture.view!.userInteractionEnabled = true
+            })
             return
         }
     
@@ -126,57 +129,55 @@ class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegat
         self.resetViewFrameAndRotation(self.imageView)
     }
     
-    private func isViewOutOfBounds(view: UIView) -> IncomeDirection{
+    private func offsetDirectionForView(view: UIView) -> OffsetDirection{
+        var multipleDirections: OffsetDirection = OffsetDirection.Inside
+        
         let screenSize = UIScreen.mainScreen().bounds
         
-        if (view.frame.origin.x + view.frame.width) < screenSize.width && (view.frame.width >= screenSize.width) && self.offDirection != .Right {
-            self.offDirection = .Right
-            return .Right
-        }else if (view.frame.origin.x > 0) && (view.frame.width >= screenSize.width) && self.offDirection != .Left {
-            self.offDirection = .Left
-            return .Left
-        }else if (view.frame.origin.y + view.frame.height) < screenSize.height && (view.frame.height >= screenSize.height) && self.offDirection != .Down {
-            self.offDirection = .Down
-            return .Down
-        }else if (view.frame.origin.y > 0) && (view.frame.height >= screenSize.height) && self.offDirection != .Up {
-            self.offDirection = .Up
-            return .Up
-        }else {
-            self.offDirection = .In
-            return .In
+        if (view.frame.origin.x + view.frame.width) < screenSize.width && (view.frame.width >= screenSize.width) {
+            multipleDirections.insert(.Right)
         }
+        if (view.frame.origin.x > 0) && (view.frame.width >= screenSize.width) {
+            multipleDirections.insert(.Left)
+        }
+        if (view.frame.origin.y + view.frame.height) < screenSize.height && (view.frame.height >= screenSize.height) {
+            multipleDirections.insert(.Down)
+        }
+        if (view.frame.origin.y > 0) && (view.frame.height >= screenSize.height) {
+            multipleDirections.insert(.Up)
+        }
+        
+        return multipleDirections
     }
     
-    private func moveInView(view: UIView, fromDirection direction: IncomeDirection, withCompletion completion: ((Bool) -> Void)?) {
-        var viewX : CGFloat
-        var viewY : CGFloat
+    private func moveInView(view: UIView, fromDirection offsetDirection: OffsetDirection, withCompletion completion: ((Bool) -> Void)?) {
+        if offsetDirection == .Inside {
+            completion?(true)
+            return
+        }
+        
+        var viewX : CGFloat = view.frame.origin.x
+        var viewY : CGFloat = view.frame.origin.y
         
         let screenSize = UIScreen.mainScreen().bounds
         
-        switch direction {
-        case .Down:
-            viewX = view.frame.origin.x
+        if offsetDirection.contains(.Down) {
             viewY = screenSize.size.height - view.frame.height
-        case .Up:
-            viewX = view.frame.origin.x
+        }
+        if offsetDirection.contains(.Up) {
             viewY = 0
-        case .Right:
+        }
+        if offsetDirection.contains(.Right) {
             viewX = screenSize.size.width - view.frame.width
-            viewY = view.frame.origin.y
-        case .Left:
+        }
+        if offsetDirection.contains(.Left) {
             viewX = 0
-            viewY = view.frame.origin.y
-        default:
-            view.userInteractionEnabled = true
-            return
         }
         
         UIView.animateWithDuration(0.1, delay: 0.0, options: .CurveEaseOut, animations: {
             let frame = CGRect(x: viewX, y: viewY, width: view.frame.width, height: view.frame.height)
             view.frame = frame
-            }, completion: { finished in
-                self.moveInView(view, fromDirection: self.isViewOutOfBounds(view), withCompletion: completion)
-        })
+            }, completion: completion)
     }
     
     private func hasToEnlargeView(view: UIView) -> Bool{
