@@ -41,7 +41,7 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        self.setImageViewFrameAndImage(self.image)        
+        self.setupImageViewFrameAndImage(self.image)
         self.addGestureRecognizers()
         self.view.backgroundColor = UIColor.clearColor()
         self.view.opaque = false
@@ -59,7 +59,7 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
         self.showImage(image, inViewController: viewController)
     }
     
-    private func setImageViewFrameAndImage(image: UIImage) {
+    private func setupImageViewFrameAndImage(image: UIImage) {
         self.imageView.image = image
         self.resetViewFrame(self.imageView, animated: false, completion: nil)
     }

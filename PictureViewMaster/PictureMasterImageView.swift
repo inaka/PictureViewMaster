@@ -24,6 +24,7 @@ class PictureMasterImageView: UIImageView {
         self.init(frame:CGRect.zero)
         self.addTapGesture()
     }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.addTapGesture()
@@ -31,6 +32,7 @@ class PictureMasterImageView: UIImageView {
     
     convenience init (frame: CGRect, andDelegate delegate: MasterViewDelegate) {
         self.init(frame: frame)
+        self.delegate = delegate
         self.addTapGesture()
     }
     
