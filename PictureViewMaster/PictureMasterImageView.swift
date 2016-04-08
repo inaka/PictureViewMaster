@@ -43,8 +43,8 @@ class PictureMasterImageView: UIImageView {
         self.userInteractionEnabled = true
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showImageInMasterView(_:))))
     }
+    
     func showImageInMasterView (gesture: UITapGestureRecognizer) {
         self.delegate.showImageInMasterView(self.image!)
     }
-
 }

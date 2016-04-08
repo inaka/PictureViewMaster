@@ -15,6 +15,9 @@ class SampleViewController: UIViewController, MasterViewDelegate {
     }
     func showImageInMasterView(image: UIImage) {
         let masterViewController: PictureMasterViewController = PictureMasterViewController(nibName: "PictureMasterViewController", bundle: nil)
+        // Initialized with custom gestures enabled
+//        masterViewController.showImage(image, inViewController:self, withGestures: [.Rotate, .Zoom, .Drag])
+        // Initialized with all gestures enabled
         masterViewController.showImage(image, inViewController:self)
     }
 }

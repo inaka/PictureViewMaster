@@ -8,10 +8,12 @@
 
 import UIKit
 
-class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegate {
-    struct Gestures : OptionSetType {
-        let rawValue: Int
-        
+public class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegate {
+    public struct Gestures : OptionSetType {
+        public let rawValue: Int
+        public init (rawValue: Int){
+            self.rawValue = rawValue
+        }
         static let None = Gestures(rawValue: 0)
         static let Drag = Gestures(rawValue: 1 << 0)
         static let Rotate = Gestures(rawValue: 1 << 1)
@@ -34,10 +36,10 @@ class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegat
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var imageView: UIImageView!
 
-    var enabledGestures = Gestures.AllGestures
+    private var enabledGestures = Gestures.AllGestures
     var image: UIImage!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         self.setImageViewFrameAndImage(self.image)        
         self.addGestureRecognizers()
@@ -50,6 +52,11 @@ class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegat
         viewController.definesPresentationContext = true
         self.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
         viewController.presentViewController(self, animated: true, completion: nil)
+    }
+    
+    func showImage(image: UIImage, inViewController viewController: UIViewController, withGestures gestures: Gestures) {
+        self.enabledGestures = gestures
+        self.showImage(image, inViewController: viewController)
     }
     
     private func setImageViewFrameAndImage(image: UIImage) {
@@ -252,7 +259,7 @@ class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegat
     
     //MARK: UIGestureRecognizerDelegate
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 }
