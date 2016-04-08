@@ -37,7 +37,7 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
     @IBOutlet weak var imageView: UIImageView!
 
     private var enabledGestures = Gestures.AllGestures
-    var image: UIImage!
+    private var image: UIImage!
     
     override public func viewDidLoad() {
         super.viewDidLoad()

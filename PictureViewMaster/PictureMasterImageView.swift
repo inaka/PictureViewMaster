@@ -13,12 +13,7 @@ import UIKit
 }
 
 class PictureMasterImageView: UIImageView {
-    @IBOutlet weak var delegate: MasterViewDelegate!
-    
-    @IBOutlet weak var ibDelegate: AnyObject? {
-        get { return delegate }
-        set { delegate = newValue as? MasterViewDelegate }
-    }
+    weak var delegate: MasterViewDelegate!
     
     override init (frame: CGRect) {
         super.init(frame: frame)
@@ -36,6 +31,11 @@ class PictureMasterImageView: UIImageView {
     
     convenience init (frame: CGRect, andDelegate delegate: MasterViewDelegate) {
         self.init(frame: frame)
+        self.addTapGesture()
+    }
+    
+    override init (image: UIImage?) {
+        super.init(image: image)
         self.addTapGesture()
     }
     

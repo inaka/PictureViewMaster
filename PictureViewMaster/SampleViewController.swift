@@ -9,9 +9,17 @@
 import UIKit
 
 class SampleViewController: UIViewController, MasterViewDelegate {
+    @IBOutlet weak var sampleImage1: PictureMasterImageView!
+    @IBOutlet weak var sampleImage2: PictureMasterImageView!
+    @IBOutlet weak var sampleImage3: PictureMasterImageView!
+    @IBOutlet weak var sampleImage4: PictureMasterImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        sampleImage1.delegate = self
+        sampleImage2.delegate = self
+        sampleImage3.delegate = self
+        sampleImage4.delegate = self
     }
     func showImageInMasterView(image: UIImage) {
         let masterViewController: PictureMasterViewController = PictureMasterViewController(nibName: "PictureMasterViewController", bundle: nil)
