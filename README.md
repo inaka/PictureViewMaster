@@ -11,7 +11,7 @@ Swift 2.3 is currently in branch master.
 
 ### Abstract
 
-This is a library that allows UIImageViews (By subclassing them on the PictureMasterImageView class) to handle a touch that will enlarge the image and let the user play with them in the ways you enable. (Dragging, rotating, zooming)
+This is a library that provides an UIImageView subclass with the capability of enlarge its image so the user can rotate it, drag it and zoom it.
 
 ### How to use it?
 
@@ -41,17 +41,18 @@ import PictureMasterView
 #### USAGE:
 
 ```swift
-//Asign the delegate to the PictureMasterImageView object
-let sampleImage : PictureMasterImageView = PictureMasterImageView(image: UIImage(named:"sampleImage"))
-sampleImage.delegate = self
+//Create an PictureMasterImageView object and assign its delegate
+let sampleImage : PictureMasterImageView = PictureMasterImageView(image: UIImage(named:"sampleImage"), andDelegate:self)
+//Or just add it on the interface builder, add a reference and assign a the delegate
+self.ibSampleImage.delegate = self
 
-//Then conform the the MasterViewDelegate
-func showImageInMasterView(image: UIImage) {
+//Then conform the the PictureMasterImageViewDelegate
+func pictureMasterImageViewDidReceiveTap (pictureMasterImageView: PictureMasterImageView) {
 let masterViewController: PictureMasterViewController = PictureMasterViewController(nibName: "PictureMasterViewController", bundle: nil)
 // Initialized with custom gestures
-masterViewController.showImage(image, inViewController:self, withGestures: [.Rotate, .Zoom, .Drag])
+masterViewController.showImage(pictureMasterImageView.image!, inViewController:self, withGestures: [.Rotate, .Zoom, .Drag])
 // Initialized with all gestures enabled
-masterViewController.showImage(image, inViewController:self)
+masterViewController.showImage(pictureMasterImageView.image!, inViewController:self)
 }
 
 And that's it. PictureMasterView will take care of showing himself and dismissing himself too because we all are lazy programers and... 

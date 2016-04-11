@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SampleViewController: UIViewController, MasterViewDelegate {
+class SampleViewController: UIViewController, PictureMasterImageViewDelegate {
     @IBOutlet weak var sampleImage1: PictureMasterImageView!
     @IBOutlet weak var sampleImage2: PictureMasterImageView!
     @IBOutlet weak var sampleImage3: PictureMasterImageView!
@@ -21,11 +21,11 @@ class SampleViewController: UIViewController, MasterViewDelegate {
         sampleImage3.delegate = self
         sampleImage4.delegate = self
     }
-    func showImageInMasterView(image: UIImage) {
+    func pictureMasterImageViewDidReceiveTap (pictureMasterImageView: PictureMasterImageView) {
         let masterViewController: PictureMasterViewController = PictureMasterViewController(nibName: "PictureMasterViewController", bundle: nil)
         // Initialized with custom gestures enabled
-//        masterViewController.showImage(image, inViewController:self, withGestures: [.Rotate, .Zoom, .Drag])
+        //        masterViewController.showImage(pictureMasterImageView.image!, inViewController:self, withGestures: [.Rotate, .Zoom, .Drag])
         // Initialized with all gestures enabled
-        masterViewController.showImage(image, inViewController:self)
+        masterViewController.showImage(pictureMasterImageView.image!, inViewController:self)
     }
 }
