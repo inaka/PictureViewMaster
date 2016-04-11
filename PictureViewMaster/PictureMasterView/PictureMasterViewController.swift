@@ -8,7 +8,21 @@
 
 import UIKit
 
-class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegate {
+public class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegate {
+    public struct Gestures : OptionSetType {
+        public let rawValue: Int
+        public init (rawValue: Int){
+            self.rawValue = rawValue
+        }
+        static let None = Gestures(rawValue: 0)
+        static let Drag = Gestures(rawValue: 1 << 0)
+        static let Rotate = Gestures(rawValue: 1 << 1)
+        static let Zoom = Gestures(rawValue: 1 << 2)
+        static let DoubleTap = Gestures(rawValue: 1 << 3)
+        static let BackgroundTap = Gestures(rawValue: 1 << 4)
+        static let AllGestures = Gestures(rawValue: Int.max)
+    }
+    
     struct OffsetDirection : OptionSetType {
         let rawValue: Int
         
@@ -21,15 +35,36 @@ class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegat
     
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var imageView: UIImageView!
-    var imageViewFrame : CGRect!
+
+    private var enabledGestures = Gestures.AllGestures
+    private var image: UIImage!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        self.setupImageViewFrameAndImage(self.image)
         self.addGestureRecognizers()
+        self.view.backgroundColor = UIColor.clearColor()
+        self.view.opaque = false
     }
     
-    private func originalImageViewFitFrameForImage(imageView: UIImageView) -> CGRect {
-        let image = imageView.image!
+    func showImage(image: UIImage, inViewController viewController: UIViewController) {
+        self.image = image
+        viewController.definesPresentationContext = true
+        self.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+        viewController.presentViewController(self, animated: true, completion: nil)
+    }
+    
+    func showImage(image: UIImage, inViewController viewController: UIViewController, withGestures gestures: Gestures) {
+        self.enabledGestures = gestures
+        self.showImage(image, inViewController: viewController)
+    }
+    
+    private func setupImageViewFrameAndImage(image: UIImage) {
+        self.imageView.image = image
+        self.resetViewFrame(self.imageView, animated: false, completion: nil)
+    }
+    
+    private func originalImageViewFitFrameForImage(image: UIImage) -> CGRect {
         let screenSize = UIScreen.mainScreen().bounds
         var frame = CGRect()
         
@@ -55,25 +90,34 @@ class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegat
     private func addGestureRecognizers() {
         self.imageView.userInteractionEnabled = true
         self.imageView.multipleTouchEnabled = true
-
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGesture(_:)))
-        tapRecognizer.numberOfTapsRequired = 2
-        self.imageView.addGestureRecognizer(tapRecognizer)
         
-        let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinchGesture(_:)))
-        self.imageView.addGestureRecognizer(pinchRecognizer)
-        pinchRecognizer.delegate = self
+        if self.enabledGestures.contains(.DoubleTap) {
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGesture(_:)))
+            tapRecognizer.numberOfTapsRequired = 2
+            self.imageView.addGestureRecognizer(tapRecognizer)
+        }
         
-        let dragRecognizer = UIPanGestureRecognizer(target: self, action: #selector(dragGesture(_:)))
-        self.imageView.addGestureRecognizer(dragRecognizer)
-        dragRecognizer.delegate = self
+        if self.enabledGestures.contains(.Zoom) {
+            let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinchGesture(_:)))
+            self.imageView.addGestureRecognizer(pinchRecognizer)
+            pinchRecognizer.delegate = self
+        }
         
-        let rotateRecognizer = UIRotationGestureRecognizer(target: self, action: #selector(rotateGesture(_:)))
-        self.imageView.addGestureRecognizer(rotateRecognizer)
-        rotateRecognizer.delegate = self
+        if self.enabledGestures.contains(.Drag) {
+            let dragRecognizer = UIPanGestureRecognizer(target: self, action: #selector(dragGesture(_:)))
+            self.imageView.addGestureRecognizer(dragRecognizer)
+            dragRecognizer.delegate = self
+        }
         
-        let tapBackgroundRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapBackgroundGesture(_:)))
-        self.backgroundView.addGestureRecognizer(tapBackgroundRecognizer)
+        if self.enabledGestures.contains(.Rotate) {
+            let rotateRecognizer = UIRotationGestureRecognizer(target: self, action: #selector(rotateGesture(_:)))
+            self.imageView.addGestureRecognizer(rotateRecognizer)
+            rotateRecognizer.delegate = self
+        }
+        if self.enabledGestures.contains(.BackgroundTap) {
+            let tapBackgroundRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapBackgroundGesture(_:)))
+            self.backgroundView.addGestureRecognizer(tapBackgroundRecognizer)
+        }
     }
     
     func tapGesture(gesture: UITapGestureRecognizer) {
@@ -126,7 +170,7 @@ class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegat
     }
     
     func tapBackgroundGesture(gesture: UITapGestureRecognizer) {
-        self.resetViewFrameAndRotation(self.imageView)
+        self.dismissViewControllerAnimated(false, completion: nil)
     }
     
     private func offsetDirectionForView(view: UIView) -> OffsetDirection{
@@ -190,12 +234,14 @@ class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegat
     }
     
     private func enlargeViewToMinimumSize(view: UIView) {
-        self.resetViewFrame(view, completion: nil)
+        self.resetViewFrame(view, animated: true, completion: nil)
     }
     
-    private func resetViewFrame(view: UIView, completion: ((Bool) -> Void)?) {
-        UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
-            view.frame = self.originalImageViewFitFrameForImage(view as! UIImageView)
+    private func resetViewFrame(view: UIView, animated: Bool, completion: ((Bool) -> Void)?) {
+        let duration = animated ? 0.2 : 0.0
+        UIView.animateWithDuration(duration, delay: 0.0, options: .CurveEaseOut, animations: {
+            let imageView = view as! UIImageView
+            view.frame = self.originalImageViewFitFrameForImage(imageView.image!)
             }, completion:completion)
     }
     
@@ -208,12 +254,12 @@ class PictureMasterViewController: UIViewController , UIGestureRecognizerDelegat
     
     private func resetViewFrameAndRotation(view: UIView) {
         self.resetViewRotation(view, completion: nil)
-        self.resetViewFrame(view, completion: nil)
+        self.resetViewFrame(view, animated: true, completion: nil)
     }
     
     //MARK: UIGestureRecognizerDelegate
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 }
