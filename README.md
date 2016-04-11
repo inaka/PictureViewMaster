@@ -52,11 +52,10 @@ masterViewController.showImage(pictureMasterImageView.image!, inViewController:s
 // Initialized with all gestures enabled
 masterViewController.showImage(pictureMasterImageView.image!, inViewController:self)
 }
+```
 
 And that's it. PictureMasterView will take care of showing himself and dismissing himself too because we all are lazy programers and... 
-<a href="http://25.media.tumblr.com/tumblr_m5kz3dTnPI1rp5220o1_500">
-![2015-03-17(http://25.media.tumblr.com/tumblr_m5kz3dTnPI1rp5220o1_500.jpg)
-</a>
+![2015-03-17](http://25.media.tumblr.com/tumblr_m5kz3dTnPI1rp5220o1_500.jpg)
 
 
 ### Contact Us
