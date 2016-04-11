@@ -18,7 +18,7 @@ NOTE: PictureMasterImageView is not actually required. You can just pass the UII
 
 ### Install
 
-Drag this files to your project :
+Drag THESE files to your project :
 `PictureMasterViewController.xib`
 `PictureMasterViewController.swift`
 `PictureMasterImageView.swift`
