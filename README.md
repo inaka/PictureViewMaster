@@ -2,8 +2,6 @@
 Interactive image projector.
 
 
-[![Build Status](https://api.travis-ci.org/inaka/EventSource.svg)](https://travis-ci.org/inaka/EventSource)
-
 ```
 This library supports Swift 2.3
 Swift 2.3 is currently in branch master.
