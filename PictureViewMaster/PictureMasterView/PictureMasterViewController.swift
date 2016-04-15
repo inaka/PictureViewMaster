@@ -61,10 +61,12 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
     
     private func setupImageViewFrameAndImage(image: UIImage) {
         self.imageView.image = image
-        self.resetViewFrameAndRotation(self.imageView, animated: false,
+        self.resetViewFrame(self.imageView, animated: false,
                                        completion: { finished in
                                         if !finished {
-                                            self.resetViewFrame(self.imageView, animated: false, completion: nil)
+                                            self.resetViewFrameAndRotation(self.imageView, animated: false, completion: {finished in if finished {
+                                                    print ("finished")
+                                                }})
                                         }})
     }
     
@@ -258,8 +260,8 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
     }
     
     private func resetViewFrameAndRotation(view: UIView, animated: Bool, completion: ((Bool) -> Void)?) {
-        self.resetViewRotation(view, animated: animated, completion: completion)
-        self.resetViewFrame(view, animated: true, completion: completion)
+        self.resetViewRotation(view, animated: animated, completion: nil)
+        self.resetViewFrame(view, animated: animated, completion: completion)
     }
     
     //MARK: UIGestureRecognizerDelegate
