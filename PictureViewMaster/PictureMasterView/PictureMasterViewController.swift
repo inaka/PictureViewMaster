@@ -61,7 +61,11 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
     
     private func setupImageViewFrameAndImage(image: UIImage) {
         self.imageView.image = image
-        self.resetViewFrame(self.imageView, animated: false, completion: nil)
+        self.resetViewFrameAndRotation(self.imageView, animated: false,
+                                       completion: { finished in
+                                        if !finished {
+                                            self.resetViewFrame(self.imageView, animated: false, completion: nil)
+                                        }})
     }
     
     private func originalImageViewFitFrameForImage(image: UIImage) -> CGRect {
@@ -122,7 +126,7 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
     
     func tapGesture(gesture: UITapGestureRecognizer) {
         guard let view = gesture.view else { return }
-        self.resetViewFrameAndRotation(view)
+        self.resetViewFrameAndRotation(view, animated: true, completion: nil)
     }
     
     func pinchGesture(gesture: UIPinchGestureRecognizer) {
@@ -245,16 +249,17 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
             }, completion:completion)
     }
     
-    private func resetViewRotation(view: UIView, completion: ((Bool) -> Void)?) {
-        UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
+    private func resetViewRotation(view: UIView, animated: Bool, completion: ((Bool) -> Void)?) {
+        let duration = animated ? 0.2 : 0.0
+        UIView.animateWithDuration(duration, delay: 0.0, options: .CurveEaseOut, animations: {
             let rotation = (atan2(view.transform.b, view.transform.a))
             view.transform = CGAffineTransformRotate(view.transform, -rotation)
             }, completion:completion)
     }
     
-    private func resetViewFrameAndRotation(view: UIView) {
-        self.resetViewRotation(view, completion: nil)
-        self.resetViewFrame(view, animated: true, completion: nil)
+    private func resetViewFrameAndRotation(view: UIView, animated: Bool, completion: ((Bool) -> Void)?) {
+        self.resetViewRotation(view, animated: animated, completion: completion)
+        self.resetViewFrame(view, animated: true, completion: completion)
     }
     
     //MARK: UIGestureRecognizerDelegate
