@@ -61,7 +61,13 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
     
     private func setupImageViewFrameAndImage(image: UIImage) {
         self.imageView.image = image
-        self.resetViewFrame(self.imageView, animated: false, completion: nil)
+        self.resetViewFrame(self.imageView, animated: false,
+                            completion: { finished in
+                                if !finished {
+                                    self.resetViewFrame(self.imageView, animated: false, completion: nil)
+                                }
+                                
+        })
     }
     
     private func originalImageViewFitFrameForImage(image: UIImage) -> CGRect {
