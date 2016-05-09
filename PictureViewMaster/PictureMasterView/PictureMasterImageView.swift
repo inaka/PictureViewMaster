@@ -8,40 +8,40 @@
 
 import UIKit
 
-@objc protocol PictureMasterImageViewDelegate: NSObjectProtocol {
+@objc public protocol PictureMasterImageViewDelegate: NSObjectProtocol {
     func pictureMasterImageViewDidReceiveTap (pictureMasterImageView: PictureMasterImageView)
 }
 
-class PictureMasterImageView: UIImageView {
-    weak var delegate: PictureMasterImageViewDelegate!
+public class PictureMasterImageView: UIImageView {
+    public weak var delegate: PictureMasterImageViewDelegate!
     
-    override init (frame: CGRect) {
+    public override init (frame: CGRect) {
         super.init(frame: frame)
         self.addTapGesture()
     }
     
-    convenience init () {
+    public convenience init () {
         self.init(frame:CGRect.zero)
         self.addTapGesture()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.addTapGesture()
     }
     
-    convenience init (frame: CGRect, andDelegate delegate: PictureMasterImageViewDelegate) {
+    public convenience init (frame: CGRect, andDelegate delegate: PictureMasterImageViewDelegate) {
         self.init(frame: frame)
         self.delegate = delegate
         self.addTapGesture()
     }
     
-    override init (image: UIImage?) {
+    public override init (image: UIImage?) {
         super.init(image: image)
         self.addTapGesture()
     }
     
-    convenience init (image: UIImage?, andDelegate delegate: PictureMasterImageViewDelegate) {
+    public convenience init (image: UIImage?, andDelegate delegate: PictureMasterImageViewDelegate) {
         self.init(image: image)
         self.delegate = delegate
         self.addTapGesture()
@@ -54,6 +54,5 @@ class PictureMasterImageView: UIImageView {
     
     func tapGesture (gesture: UITapGestureRecognizer) {
         self.delegate.pictureMasterImageViewDidReceiveTap(self)
-    
     }
 }
