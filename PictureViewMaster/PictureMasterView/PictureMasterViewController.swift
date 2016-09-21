@@ -179,7 +179,6 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
         }
         
         view.transform = CGAffineTransformRotate(view.transform, gesture.rotation)
-        print ("width \(view.frame.width), height: \(view.frame.height)")
         gesture.rotation = 0
     }
     
@@ -263,31 +262,24 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
         UIView.animateWithDuration(duration, delay: 0.0, options: .CurveEaseOut, animations: {
             let imageView = view
             view.frame = self.minimumSizeForView(imageView)
-//              view.frame = self.originalImageViewFitFrameForImage(imageView.image!)
             }, completion:completion)
     }
     
     private func minimumSizeForView(view: UIView) -> CGRect {
         let screenSize = UIScreen.mainScreen().bounds
-        var frame = CGRect()
         
         let heightRatio = view.frame.size.height / view.frame.size.width
         let widthRatio = view.frame.size.width / view.frame.size.height
         let screenRatio = screenSize.width / screenSize.height
         
+        let frameXOrigin = (screenSize.size.width / 2) - (frame.size.width / 2)
+        let frameYOrigin = (screenSize.size.height / 2) - (frame.size.height / 2)
+        
         if view.frame.size.height > view.frame.size.width && widthRatio < screenRatio {
-            
-            frame.size.height = screenSize.height
-            frame.size.width = frame.height * widthRatio
+            return CGRect(x: frameXOrigin, y: frameYOrigin, width: frame.height * widthRatio, height: screenSize.height)
         }else {
-            frame.size.width = screenSize.width
-            frame.size.height = frame.width * heightRatio
+            return CGRect(x: frameXOrigin, y: frameYOrigin, width: screenSize.width, height: frame.width * heightRatio)
         }
-        
-        frame.origin.x = (screenSize.size.width / 2) - (frame.size.width / 2)
-        frame.origin.y = (screenSize.size.height / 2) - (frame.size.height / 2)
-        
-        return frame
     }
     
     private func resetViewRotation(view: UIView, animated: Bool, completion: ((Bool) -> Void)?) {
