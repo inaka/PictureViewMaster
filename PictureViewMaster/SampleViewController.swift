@@ -21,7 +21,7 @@ class SampleViewController: UIViewController, PictureMasterImageViewDelegate {
         sampleImage3.delegate = self
         sampleImage4.delegate = self
     }
-    func pictureMasterImageViewDidReceiveTap (pictureMasterImageView: PictureMasterImageView) {
+    func pictureMasterImageViewDidReceiveTap (_ pictureMasterImageView: PictureMasterImageView) {
         let masterViewController: PictureMasterViewController = PictureMasterViewController(nibName: "PictureMasterViewController", bundle: nil)
         // Initialized with custom gestures enabled
         //        masterViewController.showImage(pictureMasterImageView.image!, inViewController:self, withGestures: [.Rotate, .Zoom, .Drag])

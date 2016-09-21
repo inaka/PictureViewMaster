@@ -9,11 +9,11 @@
 import UIKit
 
 @objc public protocol PictureMasterImageViewDelegate: NSObjectProtocol {
-    func pictureMasterImageViewDidReceiveTap (pictureMasterImageView: PictureMasterImageView)
+    func pictureMasterImageViewDidReceiveTap (_ pictureMasterImageView: PictureMasterImageView)
 }
 
-public class PictureMasterImageView: UIImageView {
-    public weak var delegate: PictureMasterImageViewDelegate!
+open class PictureMasterImageView: UIImageView {
+    open weak var delegate: PictureMasterImageViewDelegate!
     
     public override init (frame: CGRect) {
         super.init(frame: frame)
@@ -47,12 +47,12 @@ public class PictureMasterImageView: UIImageView {
         self.addTapGesture()
     }
     
-    private func addTapGesture (){
-        self.userInteractionEnabled = true
+    fileprivate func addTapGesture (){
+        self.isUserInteractionEnabled = true
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGesture(_:))))
     }
     
-    func tapGesture (gesture: UITapGestureRecognizer) {
+    func tapGesture (_ gesture: UITapGestureRecognizer) {
         self.delegate.pictureMasterImageViewDidReceiveTap(self)
     }
 }
