@@ -26,6 +26,7 @@
                 </view>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6J9-vj-6rk">
                     <rect key="frame" x="0.0" y="0.0" width="286" height="272"/>
+                    <color key="backgroundColor" red="1" green="0.12253965599820604" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="largeImage">
                         <bool key="isElement" value="YES"/>
                     </accessibility>
