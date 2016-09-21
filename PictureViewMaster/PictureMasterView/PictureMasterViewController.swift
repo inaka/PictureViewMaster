@@ -272,13 +272,13 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
         let widthRatio = view.frame.size.width / view.frame.size.height
         let screenRatio = screenSize.width / screenSize.height
         
-        let frameXOrigin = (screenSize.size.width / 2) - (frame.size.width / 2)
-        let frameYOrigin = (screenSize.size.height / 2) - (frame.size.height / 2)
+        let frameXOrigin = (screenSize.size.width / 2) - (screenSize.width / 2)
+        let frameYOrigin = (screenSize.size.height / 2) - (screenSize.height / 2)
         
         if view.frame.size.height > view.frame.size.width && widthRatio < screenRatio {
-            return CGRect(x: frameXOrigin, y: frameYOrigin, width: frame.height * widthRatio, height: screenSize.height)
+            return CGRect(x: frameXOrigin, y: frameYOrigin, width: screenSize.height * widthRatio, height: screenSize.height)
         }else {
-            return CGRect(x: frameXOrigin, y: frameYOrigin, width: screenSize.width, height: frame.width * heightRatio)
+            return CGRect(x: frameXOrigin, y: frameYOrigin, width: screenSize.width, height: screenSize.width * heightRatio)
         }
     }
     
