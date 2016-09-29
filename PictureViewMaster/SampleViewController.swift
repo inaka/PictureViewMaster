@@ -26,6 +26,6 @@ class SampleViewController: UIViewController, PictureMasterImageViewDelegate {
         // Initialized with custom gestures enabled
         //        masterViewController.showImage(pictureMasterImageView.image!, inViewController:self, withGestures: [.Rotate, .Zoom, .Drag])
         // Initialized with all gestures enabled
-        masterViewController.showImage(pictureMasterImageView.image!, inViewController:self)
+        masterViewController.showImage(pictureMasterImageView.image!, in:self)
     }
 }

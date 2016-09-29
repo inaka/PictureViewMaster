@@ -48,30 +48,27 @@ open class PictureMasterViewController: UIViewController , UIGestureRecognizerDe
         self.view.isOpaque = false
     }
     
-    func showImage(_ image: UIImage, inViewController viewController: UIViewController) {
+    func showImage(_ image: UIImage, in viewController: UIViewController, with gestures: Gestures = .allGestures) {
+        self.enabledGestures = gestures
         self.image = image
         viewController.definesPresentationContext = true
         self.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
         viewController.present(self, animated: true, completion: nil)
     }
     
-    func showImage(_ image: UIImage, inViewController viewController: UIViewController, withGestures gestures: Gestures) {
-        self.enabledGestures = gestures
-        self.showImage(image, inViewController: viewController)
-    }
-    
     fileprivate func setupImageViewFrameAndImage(_ image: UIImage) {
         self.imageView.image = image
         self.resetViewFrame(self.imageView, animated: false,
-                                       completion: { finished in
-                                        if !finished {
-                                            self.resetViewFrameAndRotation(self.imageView, animated: false, completion: {finished in if finished {
-                                                    print ("finished")
-                                                }})
+                            completion: { finished in
+                                if !finished {
+                                    self.resetFrameAndRotation(for: self.imageView, animated: false, completion: {finished in
+                                        if finished {
+                                            print ("finished")
                                         }})
+                                }})
     }
     
-    fileprivate func originalImageViewFitFrameForImage(_ image: UIImage) -> CGRect {
+    fileprivate func originalImageViewFitFrame(for image: UIImage) -> CGRect {
         let screenSize = UIScreen.main.bounds
         var frame = CGRect()
         
@@ -135,7 +132,7 @@ open class PictureMasterViewController: UIViewController , UIGestureRecognizerDe
     
     open func tapGesture(_ gesture: UITapGestureRecognizer) {
         guard let view = gesture.view else { return }
-        self.resetViewFrameAndRotation(view, animated: true, completion: nil)
+        self.resetFrameAndRotation(for: view, animated: true, completion: nil)
     }
     
     open func pinchGesture(_ gesture: UIPinchGestureRecognizer) {
@@ -158,13 +155,13 @@ open class PictureMasterViewController: UIViewController , UIGestureRecognizerDe
         
         if gesture.state == .ended {
             gesture.view!.isUserInteractionEnabled = false
-            self.moveInView(gesture.view!, fromDirection: self.offsetDirectionForView(gesture.view!),
-                            withCompletion: { finish in
+            self.moveInView(gesture.view!, from: self.offsetDirection(for: gesture.view!),
+                            with: { finish in
                                 gesture.view!.isUserInteractionEnabled = true
             })
             return
         }
-    
+        
         let translation = gesture.translation(in: self.view)
         view.center = CGPoint(x:view.center.x + translation.x,
             y:view.center.y + translation.y)
@@ -188,12 +185,12 @@ open class PictureMasterViewController: UIViewController , UIGestureRecognizerDe
 
     func swipeOutGesture(_ gesture: UITapGestureRecognizer) {
         guard let view = gesture.view else { return }
-        if self.offsetDirectionForView(view) != .inside && gesture.state == .ended {
+        if self.offsetDirection(for: view) != .inside && gesture.state == .ended {
             self.dismiss(animated: false, completion: nil)
         }
     }
     
-    fileprivate func offsetDirectionForView(_ view: UIView) -> OffsetDirection{
+    fileprivate func offsetDirection(for view: UIView) -> OffsetDirection{
         var multipleDirections: OffsetDirection = OffsetDirection.inside
         
         let screenSize = UIScreen.main.bounds
@@ -214,7 +211,7 @@ open class PictureMasterViewController: UIViewController , UIGestureRecognizerDe
         return multipleDirections
     }
     
-    fileprivate func moveInView(_ view: UIView, fromDirection offsetDirection: OffsetDirection, withCompletion completion: ((Bool) -> Void)?) {
+    fileprivate func moveInView(_ view: UIView, from offsetDirection: OffsetDirection, with completion: ((Bool) -> Void)?) {
         if offsetDirection == .inside {
             completion?(true)
             return
@@ -272,14 +269,23 @@ open class PictureMasterViewController: UIViewController , UIGestureRecognizerDe
         let widthRatio = view.frame.size.width / view.frame.size.height
         let screenRatio = screenSize.width / screenSize.height
         
-        let frameXOrigin = (screenSize.size.width / 2) - (screenSize.width / 2)
-        let frameYOrigin = (screenSize.size.height / 2) - (screenSize.height / 2)
-        
-        if view.frame.size.height > view.frame.size.width && widthRatio < screenRatio {
-            return CGRect(x: frameXOrigin, y: frameYOrigin, width: screenSize.height * widthRatio, height: screenSize.height)
-        }else {
-            return CGRect(x: frameXOrigin, y: frameYOrigin, width: screenSize.width, height: screenSize.width * heightRatio)
+    
+        var imageSize : CGSize {
+            get {
+                if view.frame.size.height > view.frame.size.width && widthRatio < screenRatio {
+                    return CGSize(width: screenSize.height * widthRatio, height: screenSize.height)
+                }else {
+                    return CGSize(width: screenSize.width, height: screenSize.width * heightRatio)
+                }
+            }
         }
+    
+        let size = imageSize
+        
+        let frameXOrigin = (screenSize.width / 2) - (size.width / 2)
+        let frameYOrigin = (screenSize.height / 2) - (size.height / 2)
+        
+        return CGRect(x: frameXOrigin, y: frameYOrigin, width: size.width, height: size.height)
     }
     
     fileprivate func resetViewRotation(_ view: UIView, animated: Bool, completion: ((Bool) -> Void)?) {
@@ -290,7 +296,7 @@ open class PictureMasterViewController: UIViewController , UIGestureRecognizerDe
             }, completion:completion)
     }
     
-    fileprivate func resetViewFrameAndRotation(_ view: UIView, animated: Bool, completion: ((Bool) -> Void)?) {
+    fileprivate func resetFrameAndRotation(for view: UIView, animated: Bool, completion: ((Bool) -> Void)?) {
         self.resetViewRotation(view, animated: animated, completion: nil)
         self.resetViewFrame(view, animated: animated, completion: completion)
     }
