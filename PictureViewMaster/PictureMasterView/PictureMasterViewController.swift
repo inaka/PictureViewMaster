@@ -272,14 +272,23 @@ public class PictureMasterViewController: UIViewController , UIGestureRecognizer
         let widthRatio = view.frame.size.width / view.frame.size.height
         let screenRatio = screenSize.width / screenSize.height
         
-        let frameXOrigin = (screenSize.size.width / 2) - (screenSize.width / 2)
-        let frameYOrigin = (screenSize.size.height / 2) - (screenSize.height / 2)
         
-        if view.frame.size.height > view.frame.size.width && widthRatio < screenRatio {
-            return CGRect(x: frameXOrigin, y: frameYOrigin, width: screenSize.height * widthRatio, height: screenSize.height)
-        }else {
-            return CGRect(x: frameXOrigin, y: frameYOrigin, width: screenSize.width, height: screenSize.width * heightRatio)
+        var imageSize : CGSize {
+            get {
+                if view.frame.size.height > view.frame.size.width && widthRatio < screenRatio {
+                    return CGSize(width: screenSize.height * widthRatio, height: screenSize.height)
+                }else {
+                    return CGSize(width: screenSize.width, height: screenSize.width * heightRatio)
+                }
+            }
         }
+        
+        let size = imageSize
+        
+        let frameXOrigin = (screenSize.width / 2) - (size.width / 2)
+        let frameYOrigin = (screenSize.height / 2) - (size.height / 2)
+        
+        return CGRect(x: frameXOrigin, y: frameYOrigin, width: size.width, height: size.height)
     }
     
     private func resetViewRotation(view: UIView, animated: Bool, completion: ((Bool) -> Void)?) {
