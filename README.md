@@ -60,10 +60,10 @@ And that's it. PictureMasterView will take care of showing himself and dismissin
 
 ## Older Versions Support
 
-- As of its `2.0.0` release, this library works with **Swift 3.0**
+- As of its `2.0` release, this library works with **Swift 3.0**
 - If you look for older languages version support, you can check out:
-- `1.1.0` release for Swift 2.3 support.
-- `1.0.2` release for Swift 2.2 support.
+- `1.1` release for Swift 2.3 support.
+- `1.0` release for Swift 2.2 support.
 
 
 ### Contact Us
