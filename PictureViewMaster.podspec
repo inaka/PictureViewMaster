@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   }
   s.author    = "Inaka"
   s.social_media_url   = "http://twitter.com/inaka"
-  s.platform     = :ios, "9.3"
+  s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/inaka/PictureViewMaster.git", :tag => s.version }
   s.source_files  = "PictureViewMaster/**/*.swift"
 end
