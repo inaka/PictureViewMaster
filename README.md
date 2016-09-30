@@ -58,6 +58,14 @@ And that's it. PictureMasterView will take care of showing himself and dismissin
 ![2015-03-17](http://25.media.tumblr.com/tumblr_m5kz3dTnPI1rp5220o1_500.jpg)
 
 
+## Older Versions Support
+
+- As of its `2.0.0` release, this library works with **Swift 3.0**
+- If you look for older languages version support, you can check out:
+- `1.1.0` release for Swift 2.3 support.
+- `1.0.2` release for Swift 2.2 support.
+
+
 ### Contact Us
 For **questions** or **general comments** regarding the use of this library, please use our public
 [hipchat room](http://inaka.net/hipchat).
