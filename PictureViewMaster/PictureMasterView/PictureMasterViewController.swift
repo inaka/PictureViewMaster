@@ -48,14 +48,14 @@ public class PictureMasterViewController: UIViewController, UIGestureRecognizerD
         self.view.isOpaque = false
     }
     
-    func showImage(_ image: UIImage, in viewController: UIViewController) {
+    public func showImage(_ image: UIImage, in viewController: UIViewController) {
         self.image = image
         viewController.definesPresentationContext = true
         self.modalPresentationStyle = .overCurrentContext
         viewController.present(self, animated: true, completion: nil)
     }
     
-    func showImage(_ image: UIImage, in viewController: UIViewController, with gestures: Gestures?) {
+    public func showImage(_ image: UIImage, in viewController: UIViewController, with gestures: Gestures?) {
         if let customGestures = gestures {
             self.enabledGestures = customGestures
         }else {
