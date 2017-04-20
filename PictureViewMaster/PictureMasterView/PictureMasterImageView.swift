@@ -13,8 +13,12 @@ import UIKit
 }
 
 public class PictureMasterImageView: UIImageView {
+    #if TARGET_INTERFACE_BUILDER
+    @IBOutlet public weak var delegate: AnyObject?
+    #else
     public weak var delegate: PictureMasterImageViewDelegate!
-    
+    #endif
+
     public override init (frame: CGRect) {
         super.init(frame: frame)
         self.addTapGesture()
@@ -47,12 +51,12 @@ public class PictureMasterImageView: UIImageView {
         self.addTapGesture()
     }
     
-    private func addTapGesture (){
-        self.userInteractionEnabled = true
+    private func addTapGesture() {
+        self.isUserInteractionEnabled = true
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGesture(_:))))
     }
     
-    func tapGesture (gesture: UITapGestureRecognizer) {
-        self.delegate.pictureMasterImageViewDidReceiveTap(self)
+    func tapGesture(_ gesture: UITapGestureRecognizer) {
+        self.delegate.pictureMasterImageViewDidReceiveTap(pictureMasterImageView: self)
     }
 }

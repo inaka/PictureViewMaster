@@ -1,12 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ZpG-ce-PbS">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZpG-ce-PbS">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Sample View Controller-->
+        <!--Delegate-->
         <scene sceneID="4ag-FM-Wb4">
             <objects>
                 <viewController id="ZpG-ce-PbS" customClass="SampleViewController" customModule="PictureViewMaster" customModuleProvider="target" sceneMemberID="viewController">
@@ -15,12 +19,12 @@
                         <viewControllerLayoutGuide type="bottom" id="dgD-OC-iAf"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="eMm-Di-e3M">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image1" translatesAutoresizingMaskIntoConstraints="NO" id="lsO-HF-M1q" customClass="PictureMasterImageView" customModule="PictureViewMaster" customModuleProvider="target">
-                                <rect key="frame" x="5" y="20" width="293" height="293"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="5" y="20" width="180" height="180"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="lsO-HF-M1q" secondAttribute="height" multiplier="1:1" id="ACP-48-fsq"/>
                                 </constraints>
@@ -32,8 +36,8 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image2" translatesAutoresizingMaskIntoConstraints="NO" id="DZb-qg-gXu" customClass="PictureMasterImageView" customModule="PictureViewMaster" customModuleProvider="target">
-                                <rect key="frame" x="303" y="20" width="292" height="293"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="190" y="20" width="180" height="180"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="15"/>
@@ -42,27 +46,33 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image3" translatesAutoresizingMaskIntoConstraints="NO" id="dQg-jd-9NI" customClass="PictureMasterImageView" customModule="PictureViewMaster" customModuleProvider="target">
-                                <rect key="frame" x="5" y="318" width="293" height="292"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="5" y="205" width="180" height="180"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="15"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="delegate" destination="ZpG-ce-PbS" id="HHx-ha-9jF"/>
+                                </connections>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image4" translatesAutoresizingMaskIntoConstraints="NO" id="cSc-ob-S3c" customClass="PictureMasterImageView" customModule="PictureViewMaster" customModuleProvider="target">
-                                <rect key="frame" x="303" y="318" width="292" height="292"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="190" y="205" width="180" height="180"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="15"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="delegate" destination="ZpG-ce-PbS" id="csW-Am-7fR"/>
+                                </connections>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.72203864955517216" green="1" blue="0.87104837209193664" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.72203864955517216" green="1" blue="0.87104837209193664" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="cSc-ob-S3c" firstAttribute="width" secondItem="lsO-HF-M1q" secondAttribute="width" id="3iX-6q-B1o"/>
                             <constraint firstAttribute="trailing" secondItem="DZb-qg-gXu" secondAttribute="trailing" constant="5" id="8Ho-u9-7iT"/>
@@ -84,8 +94,6 @@
                     <connections>
                         <outlet property="sampleImage1" destination="lsO-HF-M1q" id="UMG-XG-TN3"/>
                         <outlet property="sampleImage2" destination="DZb-qg-gXu" id="oWt-B8-lkn"/>
-                        <outlet property="sampleImage3" destination="dQg-jd-9NI" id="8qy-ca-uRE"/>
-                        <outlet property="sampleImage4" destination="cSc-ob-S3c" id="9Np-oD-ANp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8rb-iO-pUl" userLabel="First Responder" sceneMemberID="firstResponder"/>
