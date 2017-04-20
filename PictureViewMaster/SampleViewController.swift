@@ -17,13 +17,13 @@ class SampleViewController: UIViewController, PictureMasterImageViewDelegate {
         sampleImage1.delegate = self
         sampleImage2.delegate = self
     }
-    func pictureMasterImageViewDidReceiveTap (pictureMasterImageView: PictureMasterImageView) {
+    func pictureMasterImageViewDidReceiveTap (_ pictureMasterImageView: PictureMasterImageView) {
         let masterViewController: PictureMasterViewController = PictureMasterViewController(nibName: "PictureMasterViewController", bundle: nil)
 //            Initialized with custom gestures enabled
 //                masterViewController.showImage(pictureMasterImageView.image!, in: self, with: [.Rotate, .Zoom, .Drag])
 //            Initialized with no gestures enabled
-                masterViewController.showImage(pictureMasterImageView.image!, in: self, with: nil)
+//                masterViewController.showImage(pictureMasterImageView.image!, in: self, with: nil)
 //            Initialized with all gestures enabled
-//        masterViewController.showImage(pictureMasterImageView.image!, in:self)
+        masterViewController.showImage(pictureMasterImageView.image!, in:self)
     }
 }

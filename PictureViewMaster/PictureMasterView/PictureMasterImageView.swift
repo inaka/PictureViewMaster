@@ -9,7 +9,7 @@
 import UIKit
 
 @objc public protocol PictureMasterImageViewDelegate: NSObjectProtocol {
-    func pictureMasterImageViewDidReceiveTap (pictureMasterImageView: PictureMasterImageView)
+    func pictureMasterImageViewDidReceiveTap (_ pictureMasterImageView: PictureMasterImageView)
 }
 
 public class PictureMasterImageView: UIImageView {
@@ -57,6 +57,6 @@ public class PictureMasterImageView: UIImageView {
     }
     
     func tapGesture(_ gesture: UITapGestureRecognizer) {
-        self.delegate.pictureMasterImageViewDidReceiveTap(pictureMasterImageView: self)
+        self.delegate.pictureMasterImageViewDidReceiveTap(self)
     }
 }
