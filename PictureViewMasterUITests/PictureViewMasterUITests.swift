@@ -62,7 +62,7 @@ class PictureViewMasterUITests: XCTestCase {
         sleep(1)
         
         let imageFrame = largeImage.frame
-        let screenSize = UIScreen.mainScreen().bounds
+        let screenSize = UIScreen.main.bounds
         let isHorizontallyWellPlaced = (imageFrame.width < screenSize.width) ? false : (imageFrame.width >= screenSize.width) && (imageFrame.origin.x == 0)
         let isVerticallyWellPlaced = (imageFrame.height < screenSize.height) ? false : (imageFrame.height >= screenSize.height) && (imageFrame.origin.y == 0)
         
@@ -79,7 +79,7 @@ class PictureViewMasterUITests: XCTestCase {
         
         let largeImage = app.images["largeImage"]
         
-        largeImage.pinchWithScale(0.8, velocity: -10.0)
+        largeImage.pinch(withScale: 0.8, velocity: -10.0)
         sleep(1)
         
         largeImage.tap()
@@ -87,7 +87,7 @@ class PictureViewMasterUITests: XCTestCase {
         sleep(1)
  
         let imageFrame = largeImage.frame
-        let screenSize = UIScreen.mainScreen().bounds
+        let screenSize = UIScreen.main.bounds
         let isHorizontallyWellPlaced = (imageFrame.width < screenSize.width) ? false : (imageFrame.width >= screenSize.width) && (imageFrame.origin.x == 0)
         let isVerticallyWellPlaced = (imageFrame.height < screenSize.height) ? false : (imageFrame.height >= screenSize.height) && (imageFrame.origin.y == 0)
         
